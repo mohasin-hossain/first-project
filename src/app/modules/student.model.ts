@@ -168,6 +168,10 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     },
     default: 'active',
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Pre save middleware/hooks : will work on create() and save()
@@ -184,10 +188,29 @@ studentSchema.pre('save', async function (next) {
   next();
 });
 
+// Document middleware
+///////////
 // Post save middleware/hooks : will work on create() and save()
 studentSchema.post('save', function (doc, next) {
   //   console.log(this, 'post hook: we saved the data');
   doc.password = '';
+  next();
+});
+
+// Query middleware
+///////////
+studentSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+studentSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+studentSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
   next();
 });
 
