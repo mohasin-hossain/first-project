@@ -91,7 +91,7 @@ const guardianSchema = new Schema<TGuardian>({
 });
 
 // Main Student Schema
-const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
+const studentSchema = new Schema<TStudent, StudentModel>({
   id: {
     type: String,
     required: [true, 'Student ID is required'],
@@ -163,11 +163,18 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
   },
 });
 
-studentSchema.methods.isUserExists = async function (id: string) {
+// Creating a custom static method
+studentSchema.statics.isUserExists = async function (id: string) {
   const existingUser = await Student.findOne({ id: id });
-
   return existingUser;
 };
+
+// Creating a custom instance method
+// studentSchema.methods.isUserExists = async function (id: string) {
+//   const existingUser = await Student.findOne({ id: id });
+
+//   return existingUser;
+// };
 
 // Exporting the Student Model
 export const Student = model<TStudent, StudentModel>('Student', studentSchema);
