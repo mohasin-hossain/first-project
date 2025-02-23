@@ -7,6 +7,7 @@ import {
 } from './student/student.interface';
 import validator from 'validator';
 
+
 // Schema for User's Name
 const userNameSchema = new Schema<UserName>({
   firstName: {
