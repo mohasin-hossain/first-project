@@ -102,7 +102,6 @@ const studentSchema = new Schema<TStudent, StudentModel>({
   password: {
     type: String,
     required: [true, 'Password is required'],
-    unique: true,
     maxlength: [20, 'Password cannot be more than 20 characters'],
   },
   name: {
@@ -186,8 +185,10 @@ studentSchema.pre('save', async function (next) {
 });
 
 // Post save middleware/hooks : will work on create() and save()
-studentSchema.post('save', function () {
-  console.log(this, 'post hook: we saved the data');
+studentSchema.post('save', function (doc, next) {
+  //   console.log(this, 'post hook: we saved the data');
+  doc.password = '';
+  next();
 });
 
 // Creating a custom static method
