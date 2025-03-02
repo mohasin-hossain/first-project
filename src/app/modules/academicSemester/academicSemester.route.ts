@@ -13,7 +13,9 @@ router.post(
   ),
   AcademicSemesterControllers.createAcademicSemester,
 );
-// router.get('/', StudentControllers.getAllStudents);
+
+router.get('/', AcademicSemesterControllers.getAllAcademicSemesters);
+
 // router.get('/:studentId', StudentControllers.getSingleStudents);
 // router.delete('/:studentId', StudentControllers.deleteStudent);
 
