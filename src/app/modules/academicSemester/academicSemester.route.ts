@@ -5,7 +5,7 @@ import { AcademicSemesterValidations } from './academicSemester.validation';
 
 const router = express.Router();
 
-// Will call controller func
+// Create Academic Semester
 router.post(
   '/create-academic-semester',
   validateRequest(
@@ -14,13 +14,22 @@ router.post(
   AcademicSemesterControllers.createAcademicSemester,
 );
 
+// Get All Academic Semesters
 router.get('/', AcademicSemesterControllers.getAllAcademicSemesters);
 
+// Get Single Academic Semesters
 router.get(
-  '/:id',
+  '/:semesterId',
   AcademicSemesterControllers.getSingleAcademicSemester,
 );
 
-// router.delete('/:studentId', StudentControllers.deleteStudent);
+// Update Single Academic Semester
+router.patch(
+  '/:semesterId',
+  validateRequest(
+    AcademicSemesterValidations.updateAcademicSemesterValidationSchema,
+  ),
+  AcademicSemesterControllers.updateSingleAcademicSemester,
+);
 
 export const AcademicSemesterRoutes = router;
