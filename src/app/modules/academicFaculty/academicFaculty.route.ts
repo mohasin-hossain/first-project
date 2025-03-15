@@ -17,7 +17,7 @@ router.post(
 // Get All Academic Faculties
 router.get('/', AcademicFacultyControllers.getAllAcademicFaculties);
 
-// Get Single Academic Semesters
+// Get Single Academic Faculty
 router.get('/:facultyId', AcademicFacultyControllers.getSingleAcademicFaculty);
 
 // Update Single Academic Faculty
