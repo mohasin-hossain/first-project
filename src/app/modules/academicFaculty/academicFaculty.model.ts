@@ -22,10 +22,7 @@ academicFacultySchema.pre('save', async function (next) {
   });
 
   if (isDepatmentExist) {
-    throw new AppError(
-      httpStatus.NOT_FOUND,
-      'Faculty already exist!',
-    );
+    throw new AppError(httpStatus.NOT_FOUND, 'Faculty already exist!');
   }
 
   next();
@@ -34,9 +31,9 @@ academicFacultySchema.pre('save', async function (next) {
 academicFacultySchema.pre('findOneAndUpdate', async function (next) {
   const query = this.getQuery();
 
-  const isDepatmentExist = await AcademicFaculty.findOne(query);
+  const isFacultyExist = await AcademicFaculty.findOne(query);
 
-  if (!isDepatmentExist) {
+  if (!isFacultyExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'Faculty does not exist!');
   }
 });

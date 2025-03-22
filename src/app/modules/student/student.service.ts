@@ -3,6 +3,7 @@ import { Student } from './student.model';
 import AppError from '../../errors/AppError';
 import { User } from '../user/user.model';
 import httpStatus from 'http-status';
+import { checkIfExists } from '../../utils/checkIfExists';
 
 const getAllStudentsFromDB = async () => {
   const result = await Student.find()
@@ -17,7 +18,7 @@ const getAllStudentsFromDB = async () => {
 };
 
 const getSingleStudentFromDB = async (id: string) => {
-  await Student.checkIfStudentExists({ _id: id });
+  await checkIfExists(Student, { _id: id }, 'Student does not Exist');
 
   const result = await Student.findById(id)
     .populate('admissionSemester')
@@ -27,12 +28,12 @@ const getSingleStudentFromDB = async (id: string) => {
         path: 'academicFaculty',
       },
     });
-    
+
   return result;
 };
 
 const deleteStudentFromDB = async (id: string) => {
-  await Student.checkIfStudentExists({ id });
+  await checkIfExists(Student, { id: id }, 'Student does not Exist');
 
   const session = await mongoose.startSession();
 

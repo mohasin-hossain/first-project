@@ -26,10 +26,7 @@ academicDepartmentSchema.pre('save', async function (next) {
   });
 
   if (isDepatmentExist) {
-    throw new AppError(
-      httpStatus.NOT_FOUND,
-      'Department already exist!',
-    );
+    throw new AppError(httpStatus.NOT_FOUND, 'Department already exist!');
   }
 
   next();
@@ -38,11 +35,13 @@ academicDepartmentSchema.pre('save', async function (next) {
 academicDepartmentSchema.pre('findOneAndUpdate', async function (next) {
   const query = this.getQuery();
 
-  const isDepatmentExist = await AcademicDepartment.findOne(query);
+  const isDepartmentExist = await AcademicDepartment.findOne(query);
 
-  if (!isDepatmentExist) {
+  if (!isDepartmentExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'Department does not exist!');
   }
+
+  next();
 });
 
 export const AcademicDepartment = model<TAcademicDepartment>(

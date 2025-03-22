@@ -43,9 +43,9 @@ export type TStudent = {
 };
 
 // For creating static
-export interface StudentModel extends Model<TStudent> {
-  checkIfStudentExists(filter: Record<string, any>): Promise<TStudent>;
-}
+// export interface StudentModel extends Model<TStudent> {
+//   checkIfStudentExists(filter: Record<string, any>): Promise<TStudent>;
+// }
 
 // For creating instance
 // export interface StudentMethods {

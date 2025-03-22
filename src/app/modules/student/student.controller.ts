@@ -22,7 +22,7 @@ const getSingleStudent = catchAsync(async (req, res) => {
 
   // Validate if the studentId is a valid ObjectId
   if (!mongoose.Types.ObjectId.isValid(studentId)) {
-    throw new AppError(httpStatus.BAD_REQUEST, 'Invalid job ID');
+    throw new AppError(httpStatus.BAD_REQUEST, 'Invalid student ID');
   }
 
   const student = await StudentServices.getSingleStudentFromDB(studentId);

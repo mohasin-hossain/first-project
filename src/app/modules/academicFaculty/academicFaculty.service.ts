@@ -1,3 +1,4 @@
+import { checkIfExists } from '../../utils/checkIfExists';
 import { TAcademicFaculty } from './academicFaculty.interface';
 import { AcademicFaculty } from './academicFaculty.model';
 
@@ -13,6 +14,12 @@ const getAllAcademicFacultiesFromDB = async () => {
 };
 
 const getSingleAcademicFacultyFromDB = async (id: string) => {
+  await checkIfExists(
+    AcademicFaculty,
+    { _id: id },
+    'Academic Faculty does not Exist',
+  );
+
   const result = await AcademicFaculty.findById(id);
 
   return result;

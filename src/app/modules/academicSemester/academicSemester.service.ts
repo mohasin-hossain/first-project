@@ -1,3 +1,4 @@
+import { checkIfExists } from '../../utils/checkIfExists';
 import { academicSemesterNameCodeMapper } from './academicSemester.constant';
 import { TAcademicSemester } from './academicSemester.interface';
 import { AcademicSemester } from './academicSemester.model';
@@ -18,6 +19,12 @@ const getAllAcademicSemestersFromDB = async () => {
 };
 
 const getSingleAcademicSemesterFromDB = async (id: string) => {
+  await checkIfExists(
+    AcademicSemester,
+    { _id: id },
+    'Academic Semester does not Exist',
+  );
+
   const result = await AcademicSemester.findById(id);
 
   return result;
