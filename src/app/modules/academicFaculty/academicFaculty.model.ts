@@ -36,6 +36,8 @@ academicFacultySchema.pre('findOneAndUpdate', async function (next) {
   if (!isFacultyExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'Faculty does not exist!');
   }
+
+  next();
 });
 
 export const AcademicFaculty = model<TAcademicFaculty>(

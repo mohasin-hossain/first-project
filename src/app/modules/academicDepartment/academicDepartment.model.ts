@@ -21,11 +21,11 @@ const academicDepartmentSchema = new Schema<TAcademicDepartment>(
 );
 
 academicDepartmentSchema.pre('save', async function (next) {
-  const isDepatmentExist = await AcademicDepartment.findOne({
+  const isDepartmentExist = await AcademicDepartment.findOne({
     name: this.name,
   });
 
-  if (isDepatmentExist) {
+  if (isDepartmentExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'Department already exist!');
   }
 
