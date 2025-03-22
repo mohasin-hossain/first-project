@@ -5,6 +5,6 @@ const router = express.Router();
 
 // Will call controller func
 router.get('/', StudentControllers.getAllStudents);
-router.get('/:studentId', StudentControllers.getSingleStudents);
+router.get('/:studentId', StudentControllers.getSingleStudent);
 router.delete('/:studentId', StudentControllers.deleteStudent);
 export const StudentRoutes = router;

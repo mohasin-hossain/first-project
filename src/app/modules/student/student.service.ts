@@ -17,6 +17,8 @@ const getAllStudentsFromDB = async () => {
 };
 
 const getSingleStudentFromDB = async (id: string) => {
+  await Student.checkIfStudentExists({ _id: id });
+
   const result = await Student.findById(id)
     .populate('admissionSemester')
     .populate({
@@ -25,11 +27,13 @@ const getSingleStudentFromDB = async (id: string) => {
         path: 'academicFaculty',
       },
     });
+    
   return result;
 };
 
 const deleteStudentFromDB = async (id: string) => {
-  
+  await Student.checkIfStudentExists({ id });
+
   const session = await mongoose.startSession();
 
   try {

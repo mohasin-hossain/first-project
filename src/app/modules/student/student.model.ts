@@ -8,6 +8,8 @@ import {
   TStudent,
   TUserName,
 } from './student.interface';
+import AppError from '../../errors/AppError';
+import httpStatus from 'http-status';
 
 // Schema for User's Name
 const userNameSchema = new Schema<TUserName>({
@@ -172,8 +174,8 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     },
     academicDepartment: {
       type: Schema.Types.ObjectId,
-      ref: 'AcademicDepartment'
-    }
+      ref: 'AcademicDepartment',
+    },
   },
   {
     toJSON: {
@@ -205,10 +207,17 @@ studentSchema.pre('aggregate', function (next) {
   next();
 });
 
-// Creating a custom static method
-studentSchema.statics.isUserExists = async function (id: string) {
-  const existingUser = await Student.findOne({ id: id });
-  return existingUser;
+// Custom static method
+studentSchema.statics.checkIfStudentExists = async function (
+  filter: Record<string, any>,
+) {
+  const student = await Student.findOne(filter);
+
+  if (!student) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Student does not exist!');
+  }
+
+  return student;
 };
 
 // Exporting the Student Model

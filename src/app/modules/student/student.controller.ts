@@ -3,6 +3,8 @@ import { StudentServices } from './student.service';
 import sendResponse from '../../utils/sendResponses';
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
+import mongoose from 'mongoose';
+import AppError from '../../errors/AppError';
 
 const getAllStudents = catchAsync(async (req, res) => {
   const result = await StudentServices.getAllStudentsFromDB();
@@ -15,15 +17,21 @@ const getAllStudents = catchAsync(async (req, res) => {
   });
 });
 
-const getSingleStudents = catchAsync(async (req, res) => {
+const getSingleStudent = catchAsync(async (req, res) => {
   const { studentId } = req.params;
-  const result = await StudentServices.getSingleStudentFromDB(studentId);
+
+  // Validate if the studentId is a valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(studentId)) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Invalid job ID');
+  }
+
+  const student = await StudentServices.getSingleStudentFromDB(studentId);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Student is retrieved successfully',
-    data: result,
+    data: student,
   });
 });
 
@@ -41,6 +49,6 @@ const deleteStudent = catchAsync(async (req, res) => {
 
 export const StudentControllers = {
   getAllStudents,
-  getSingleStudents,
+  getSingleStudent,
   deleteStudent,
 };
