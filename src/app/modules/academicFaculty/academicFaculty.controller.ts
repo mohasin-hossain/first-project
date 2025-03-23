@@ -2,8 +2,6 @@ import sendResponse from '../../utils/sendResponses';
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import { AcademicFacultyServices } from './academicFaculty.service';
-import mongoose from 'mongoose';
-import AppError from '../../errors/AppError';
 
 const createAcademicFaculty = catchAsync(async (req, res) => {
   // will call service func to send this data
@@ -32,11 +30,6 @@ const getAllAcademicFaculties = catchAsync(async (req, res) => {
 
 const getSingleAcademicFaculty = catchAsync(async (req, res) => {
   const { facultyId } = req.params;
-
-   // Validate if the ID is a valid ObjectId
-   if (!mongoose.Types.ObjectId.isValid(facultyId)) {
-    throw new AppError(httpStatus.BAD_REQUEST, 'Invalid faculty ID');
-  }
 
   const result =
     await AcademicFacultyServices.getSingleAcademicFacultyFromDB(facultyId);
