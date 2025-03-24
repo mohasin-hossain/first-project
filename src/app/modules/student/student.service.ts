@@ -6,8 +6,26 @@ import httpStatus from 'http-status';
 import { checkIfExists } from '../../utils/checkIfExists';
 import { TStudent } from './student.interface';
 
-const getAllStudentsFromDB = async () => {
-  const result = await Student.find()
+const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
+  const queryObj = { ...query };
+  const studentSearchableFields = ['email', 'name.firstName', 'presentAdress'];
+
+  let searchTerm = '';
+  if (query?.searchTerm) {
+    searchTerm = query?.searchTerm as string;
+  }
+
+  const searchQuery = Student.find({
+    $or: studentSearchableFields.map((field) => ({
+      [field]: { $regex: searchTerm, $options: 'i' },
+    })),
+  });
+
+  const excludeFields = ['searchTerm'];
+  excludeFields.forEach((el) => delete queryObj[el]);
+
+  const result = await searchQuery
+    .find(queryObj)
     .populate('admissionSemester')
     .populate({
       path: 'academicDepartment',
